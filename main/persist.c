@@ -1,3 +1,5 @@
+#include "esp_timer.h"
+#include <inttypes.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -205,7 +207,7 @@ int16_t persist_add(uint16_t rx, uint16_t tx, const void* src, size_t size)
 	rMUTEX(pPersist->data_mutex);
 
 	if (msg_added) {
-		ESP_LOGI(PERSIST_TAG, "Message added with size: %04X", size);
+		ESP_LOGI(PERSIST_TAG, "Message added with size: %04"PRIx32"", size);
 	}
 	else {
 		ESP_LOGI(PERSIST_TAG, "Error adding message: malloc error %s %d", __func__, __LINE__);
@@ -291,7 +293,7 @@ bool16 persist_send(persist_t* pPersist)
 		return false;
 	}
 	else {
-		ESP_LOGD(PERSIST_TAG, "Message sent with size: %04X", msg.msg_length);
+		ESP_LOGD(PERSIST_TAG, "Message sent with size: %04"PRIx32"", msg.msg_length);
 	}
 
 	return true;
