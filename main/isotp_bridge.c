@@ -130,7 +130,9 @@ void write_password(char* data)
 void send_packet(uint32_t txID, uint32_t rxID, uint8_t flags, const void* src, size_t size)
 {
 	/* WiFi WebSocket — push to ring buffer (non-blocking, safe from any task) */
-	wifi_server_push_frame((uint16_t)txID, (uint16_t)rxID, (const uint8_t*)src, size);
+	#ifdef CONFIG_FUNKBRIDGE_WIFI_DEFAULT_MODE
+        wifi_server_push_frame((uint16_t)txID, (uint16_t)rxID, (const uint8_t*)src, size);
+#endif
 
 	if(ble_connected()) {
 		ble_send(txID, rxID, flags, src, size);
