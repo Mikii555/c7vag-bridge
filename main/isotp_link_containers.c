@@ -6,6 +6,8 @@
 #include "esp_log.h"
 #include "isotp.h"
 #include "isotp_link_containers.h"
+IsoTpLinkContainer isotp_link_containers[NUM_ISOTP_LINK_CONTAINERS];
+uint16_t isotp_link_container_id;
 #include "constants.h"
 
 #define LINKS_TAG   "ISOTP_LINKS"
