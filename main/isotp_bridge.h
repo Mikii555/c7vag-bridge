@@ -1,3 +1,4 @@
+#include "ble_server.h"
 #ifndef BRIDGE_H
 #define BRIDGE_H
 
