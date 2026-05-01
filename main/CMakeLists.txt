@@ -6,6 +6,7 @@ if(CONFIG_FUNKBRIDGE_WIFI_DEFAULT_MODE)
     set(WIFI_SRCS "wifi_server.c")
     set(WIFI_REQUIRES
         esp_wifi
+        esp_wifi
         esp_netif
         esp_http_server
         mdns
@@ -24,6 +25,7 @@ idf_component_register(
          ${WIFI_SRCS}
     INCLUDE_DIRS "."
     REQUIRES
+        esp_wifi
         driver
         bt
         nvs_flash

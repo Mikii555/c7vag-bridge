@@ -9,3 +9,9 @@ void wifi_server_start(void) {}
 void wifi_server_stop(void) {}
 void wifi_server_set_rx_callback(void *cb) { (void)cb; }
 #endif
+
+#include "esp_wifi_types.h"
+esp_err_t wifi_get_mode(wifi_mode_t *mode) {
+    if(mode) *mode = WIFI_MODE_NULL;
+    return 0;
+}
