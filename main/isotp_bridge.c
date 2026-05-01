@@ -23,7 +23,9 @@
 #include "uart.h"
 #include "connection_handler.h"
 #include "isotp_bridge.h"
+#ifdef CONFIG_FUNKBRIDGE_WIFI_DEFAULT_MODE
 #include "wifi_server.h"
+#endif
 #include "mcp2515.h"
 
 #define BRIDGE_TAG 					"Bridge"
