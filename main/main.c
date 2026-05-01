@@ -18,6 +18,7 @@
 #include "twai.h"
 #include "persist.h"
 #include "constants.h"
+SemaphoreHandle_t sync_task_sem;
 #include "led.h"
 #include "eeprom.h"
 #include "uart.h"
