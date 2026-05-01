@@ -78,7 +78,7 @@ void configure_isotp_links()
 
 void disable_isotp_links()
 {
-    bool16 didDeinit = false;
+    uint16_t didDeinit = false;
     for (uint16_t i = 0; i < NUM_ISOTP_LINK_CONTAINERS; i++) {
         IsoTpLinkContainer *c = &isotp_link_containers[i];
         if (c->wait_for_isotp_data_sem) { vSemaphoreDelete(c->wait_for_isotp_data_sem); c->wait_for_isotp_data_sem = NULL; didDeinit = true; }
