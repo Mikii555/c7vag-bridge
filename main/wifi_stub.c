@@ -2,11 +2,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
-// Stub for BLE-only build
 void wifi_server_push_frame(uint16_t tx_id, uint16_t rx_id, const uint8_t *data, size_t len) {
-    (void)tx_id;
-    (void)rx_id;
-    (void)data;
-    (void)len;
+    (void)tx_id; (void)rx_id; (void)data; (void)len;
 }
+void wifi_server_start(void) {}
+void wifi_server_stop(void) {}
+void wifi_server_set_rx_callback(void *cb) { (void)cb; }
 #endif
