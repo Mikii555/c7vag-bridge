@@ -171,7 +171,7 @@ static void isotp_processing_task(void *arg)
 
 			// if it is time to send fully received + parsed ISO-TP data over BLE and/or websocket
 			if (ret == ISOTP_RET_OK) {
-				ESP_LOGI(BRIDGE_TAG, "Received ISO-TP message with length: %04X", out_size);
+				ESP_LOGI(BRIDGE_TAG, "Received ISO-TP message with length: %" PRIx32 "", out_size);
 				for (int i = 0; i < out_size; i++) {
 					ESP_LOGD(BRIDGE_TAG, "payload_buf[%d] = %02x", i, payload_buf[i]);
 				}
@@ -399,7 +399,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 									header->txID == isotp_link_container->link.send_arbitration_id)
 								{
 									uint16_t stmin = isotp_link_container->link.stmin_override;
-									ESP_LOGI(BRIDGE_TAG, "Sending stmin [%04X] from container [%02X]", stmin, i);
+									ESP_LOGI(BRIDGE_TAG, "Sending stmin [%" PRIx32 "] from container [%02X]", stmin, i);
 									send_packet(isotp_link_container->link.receive_arbitration_id, isotp_link_container->link.send_arbitration_id, BLE_COMMAND_FLAG_SETTINGS | BRG_SETTING_ISOTP_STMIN, &stmin, sizeof(uint16_t));
 								}
 							}
@@ -414,28 +414,28 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 						case BRG_SETTING_PERSIST_DELAY:
 							{
 								uint16_t delay = persist_get_delay();
-								ESP_LOGI(BRIDGE_TAG, "Sending persist delay [%04X]", delay);
+								ESP_LOGI(BRIDGE_TAG, "Sending persist delay [%" PRIx32 "]", delay);
 								send_packet(0, 0, BLE_COMMAND_FLAG_SETTINGS | BRG_SETTING_PERSIST_DELAY, &delay, sizeof(uint16_t));
 							}
 							break;
 						case BRG_SETTING_PERSIST_Q_DELAY:
 							{
 								uint16_t delay = persist_get_q_delay();
-								ESP_LOGI(BRIDGE_TAG, "Sending persist queue delay [%04X]", delay);
+								ESP_LOGI(BRIDGE_TAG, "Sending persist queue delay [%" PRIx32 "]", delay);
 								send_packet(0, 0, BLE_COMMAND_FLAG_SETTINGS | BRG_SETTING_PERSIST_Q_DELAY, &delay, sizeof(uint16_t));
 							}
 							break;
 						case BRG_SETTING_BLE_SEND_DELAY:
 							{
 								uint16_t delay = ble_get_delay_send();
-								ESP_LOGI(BRIDGE_TAG, "Sending BLE send delay [%04X]", delay);
+								ESP_LOGI(BRIDGE_TAG, "Sending BLE send delay [%" PRIx32 "]", delay);
 								send_packet(0, 0, BLE_COMMAND_FLAG_SETTINGS | BRG_SETTING_BLE_SEND_DELAY, &delay, sizeof(uint16_t));
 							}
 							break;
 						case BRG_SETTING_BLE_MULTI_DELAY:
 							{
 								uint16_t delay = ble_get_delay_multi();
-								ESP_LOGI(BRIDGE_TAG, "Sending BLE send delay [%04X]", delay);
+								ESP_LOGI(BRIDGE_TAG, "Sending BLE send delay [%" PRIx32 "]", delay);
 								send_packet(0, 0, BLE_COMMAND_FLAG_SETTINGS | BRG_SETTING_BLE_MULTI_DELAY, &delay, sizeof(uint16_t));
 							}
 							break;
@@ -468,7 +468,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 									{
 										uint16_t* stmin = (uint16_t*)data;
 										isotp_link_container->link.stmin_override = *stmin;
-										ESP_LOGI(BRIDGE_TAG, "Set stmin [%04X] on container [%02X]", *stmin, i);
+										ESP_LOGI(BRIDGE_TAG, "Set stmin [%" PRIx32 "] on container [%02X]", *stmin, i);
 										link_found = true;
 									}
 								rMUTEX(isotp_link_container->data_mutex);
@@ -484,7 +484,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 						{
 							uint32_t* color = (uint32_t*)data;
 							led_setcolor(*color);
-							ESP_LOGI(BRIDGE_TAG, "Set led color [%08X]", *color);
+							ESP_LOGI(BRIDGE_TAG, "Set led color [%" PRIx32 "]", *color);
 							return true;
 						}
 						break;
@@ -494,7 +494,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 						{   //confirm correct command size
 							uint16_t* delay = (uint16_t*)data;
 							persist_set_delay(*delay);
-							ESP_LOGI(BRIDGE_TAG, "Set persist delay [%08X]", *delay);
+							ESP_LOGI(BRIDGE_TAG, "Set persist delay [%" PRIx32 "]", *delay);
 							return true;
 						}
 						break;
@@ -504,7 +504,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 						{   //confirm correct command size
 							uint16_t* delay = (uint16_t*)data;
 							persist_set_q_delay(*delay);
-							ESP_LOGI(BRIDGE_TAG, "Set persist queue delay [%08X]", *delay);
+							ESP_LOGI(BRIDGE_TAG, "Set persist queue delay [%" PRIx32 "]", *delay);
 							return true;
 						}
 						break;
@@ -514,7 +514,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 						{   //confirm correct command size
 							uint16_t* delay = (uint16_t*)data;
 							ble_set_delay_send(*delay);
-							ESP_LOGI(BRIDGE_TAG, "Set BLE send delay [%08X]", *delay);
+							ESP_LOGI(BRIDGE_TAG, "Set BLE send delay [%" PRIx32 "]", *delay);
 							return true;
 						}
 						break;
@@ -524,7 +524,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 						{   //confirm correct command size
 							uint16_t* delay = (uint16_t*)data;
 							ble_set_delay_multi(*delay);
-							ESP_LOGI(BRIDGE_TAG, "Set BLE wait for queue item [%08X]", *delay);
+							ESP_LOGI(BRIDGE_TAG, "Set BLE wait for queue item [%" PRIx32 "]", *delay);
 							return true;
 						}
 						break;
@@ -605,7 +605,7 @@ bool16 parse_packet(ble_header_t* header, uint8_t* data)
 			{
 				if (!persist_enabled())
 				{
-					ESP_LOGI(BRIDGE_TAG, "Received message [%04X]", header->cmdSize);
+					ESP_LOGI(BRIDGE_TAG, "Received message [%" PRIx32 "]", header->cmdSize);
 
 					send_message_t msg;
 					msg.msg_length = header->cmdSize;

@@ -1,3 +1,4 @@
+#include <inttypes.h>
 // Copied from "BLE SPP" example in ESP-IDF, which is Public Domain
 // This is kind of complicated, but isn't really.
 // Here's what happens:
@@ -341,7 +342,7 @@ void send_task(void *pvParameters)
                 //Are we shutting down?
                 if (ble_allow_run_tasks()) {
                     //If not continue
-                    ESP_LOGI(BLE_TAG, "Sending message [%08X]", event.msg_length);
+                    ESP_LOGI(BLE_TAG, "Sending message [%08"PRIx32"]", event.msg_length);
                     if (event.msg_length) {
                         //Is GATT setup and ready to notify?
                         if (!enable_data_ntf) {
@@ -406,7 +407,7 @@ void send_task(void *pvParameters)
                                             data = nextData;
                                             dataLength = nextDataLength;
 
-                                            ESP_LOGI(BLE_TAG, "-Multisend Packet [%08X]-", nextEvent.msg_length);
+                                            ESP_LOGI(BLE_TAG, "-Multisend Packet [%08"PRIx32"]-", nextEvent.msg_length);
                                         }
                                         else {
                                             //This shouldn't happen?
