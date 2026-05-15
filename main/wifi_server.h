@@ -1,6 +1,9 @@
 #ifndef WIFI_SERVER_H
 #define WIFI_SERVER_H
 
+#include <stdint.h>
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,30 +15,30 @@ typedef enum {
     WIFI_MODE_STATION  = 2,   /* Join existing network */
 } funkbridge_wifi_mode_t;
 
-/* WiFi config stored in NVS */
-typedef struct {
-    funkbridge_wifi_mode_t mode;
-    char ssid[64];
-    char password[64];
-} wifi_config_nvs_t;
+/* Callback Typ für empfangene Daten */
+typedef void (*wifi_frame_cb_t)(uint16_t tx_id, uint16_t rx_id, 
+                                 const uint8_t *data, size_t len);
 
-/* Start WiFi subsystem — call after NVS init */
+/* --- Core Functions --- */
+
+// Startet das Subsystem (NVS muss vorher initialisiert sein!)
 void wifi_server_start(void);
+
+// Beendet Server und WiFi sauber (Wichtig für Sleep-Modus)
 void wifi_server_stop(void);
 
-/* Read current mode from NVS */
+// Liest den aktuellen Modus (AP/STA/OFF) aus dem NVS
 funkbridge_wifi_mode_t wifi_get_mode(void);
 
-/* Called by ISO-TP bridge to push frames to WebSocket clients */
-void wifi_server_push_frame(uint16_t tx_id, uint16_t rx_id,
-                             const uint8_t *data, size_t len);
-
-/* Called by WebSocket receive handler to inject frames into ISO-TP */
-typedef void (*wifi_frame_cb_t)(uint16_t tx_id, uint16_t rx_id,
-                                 const uint8_t *data, size_t len);
+// Setzt den Callback für eingehende WebSocket-Daten
 void wifi_server_set_rx_callback(wifi_frame_cb_t cb);
+
+// Pusht Daten vom ISO-TP/CAN-Bus in den WebSocket-Ringbuffer
+void wifi_server_push_frame(uint16_t tx_id, uint16_t rx_id, 
+                             const uint8_t *data, size_t len);
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* WIFI_SERVER_H */
