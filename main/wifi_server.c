@@ -143,3 +143,26 @@ void app_main(void)
 
     esp_deep_sleep_start();
 }
+
+void wifi_server_stop(void) {
+    if (!s_running) return;
+    s_running = false;
+
+    ESP_LOGI(TAG, "Stopping WiFi Server...");
+
+    if (s_server) {
+        httpd_stop(s_server);
+        s_server = NULL;
+    }
+
+    esp_wifi_stop();
+    esp_wifi_deinit();
+
+    if (s_tx_ringbuf) {
+        vRingbufferDelete(s_tx_ringbuf);
+        s_tx_ringbuf = NULL;
+    }
+    
+    s_ws_fd = -1;
+    ESP_LOGI(TAG, "WiFi Subsystem stopped.");
+}
